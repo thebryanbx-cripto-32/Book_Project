@@ -15,9 +15,7 @@ import plotly.express as px
 
 st.set_page_config(
     page_title="Book Recommender App",
-    page_icon="📚",
-    layout="wide"
-)
+    layout="wide")
 
 
 # --------------------------------------------------
@@ -26,7 +24,7 @@ st.set_page_config(
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv("data/books_with_clusters_pca.csv")
+    df = pd.read_csv("data/Books_Clusters_PCA.csv")
 
     required_columns = [
         "title", "author", "average_rating", "ratings_count",
@@ -186,7 +184,7 @@ page = st.sidebar.radio(
 # --------------------------------------------------
 
 if page == "Home":
-    st.title("📚 Book Recommendation System")
+    st.title("Book Recommendation System")
 
     st.markdown(
         """
@@ -218,7 +216,7 @@ if page == "Home":
 
     st.plotly_chart(fig, use_container_width=True)
 
-    st.subheader("Project Workflow")
+    st.subheader("Project Workflow Summary")
 
     st.markdown(
         """
@@ -230,13 +228,23 @@ if page == "Home":
         """
     )
 
+    st.markdown("---")
+
+    st.markdown(
+        """
+        Developed by **Bryan Calderon**  
+        For the **Ironhack Final Project**  
+        **Germany 2026**
+        """
+    )
+
 
 # --------------------------------------------------
 # Page 2: Explore Books
 # --------------------------------------------------
 
 elif page == "Explore Books":
-    st.title("🔎 Explore Books")
+    st.title("Explore Books")
 
     st.sidebar.subheader("Filters")
 
@@ -286,12 +294,27 @@ elif page == "Explore Books":
 
     st.write(f"Showing **{filtered_df.shape[0]}** books")
 
+      # Adding better labels for the table
+    display_df = filtered_df[[
+        "title",
+        "author", "source_year", "average_rating", "ratings_count",
+        "reviews_count", "genres", "cluster_label","source"]].copy()
+
+    display_df = display_df.rename(columns={
+        "title": "Title",
+        "author": "Author",
+        "source_year": "Publication Year",
+        "average_rating": "Average Rating",
+        "ratings_count": "Number of Ratings",
+        "reviews_count": "Number of Reviews",
+        "genres": "Genres",
+        "cluster_label": "Book Cluster",
+         "source": "Data Source"
+    })
+
     st.dataframe(
-        filtered_df[[
-            "title", "author", "source_year", "average_rating",
-            "ratings_count", "genres", "cluster_label", "source"
-        ]].sort_values("average_rating", ascending=False),
-        use_container_width=True
+    display_df.sort_values("Average Rating", ascending=False),
+    use_container_width=True
     )
 
     st.subheader("Rating Distribution")
@@ -300,18 +323,30 @@ elif page == "Explore Books":
         filtered_df,
         x="average_rating",
         nbins=25,
-        title="Distribution of Average Ratings"
+        title="Distribution of Average Ratings" 
     )
+
+    fig.update_layout(xaxis_title = "Average Rating",
+        yaxis_title = "Number of Books")
 
     st.plotly_chart(fig, use_container_width=True)
 
+    st.markdown("---")
+
+    st.markdown(
+        """
+        Developed by **Bryan Calderon**  
+        For the **Ironhack Final Project**  
+        **Germany 2026**
+        """
+    )
 
 # --------------------------------------------------
 # Page 3: Recommendation System
 # --------------------------------------------------
 
 elif page == "Recommendation System":
-    st.title("✨ Book Recommendation System")
+    st.title("Book Recommendation System")
 
     st.markdown(
         """
@@ -393,7 +428,7 @@ elif page == "Recommendation System":
 # --------------------------------------------------
 
 elif page == "Clusters & PCA":
-    st.title("📊 Clusters & PCA Visualization")
+    st.title("Clusters & PCA Visualization")
 
     st.markdown(
         """
@@ -408,11 +443,7 @@ elif page == "Clusters & PCA":
         df.groupby("cluster_label")
         .agg(
             book_count=("title", "count"),
-            avg_rating=("average_rating", "mean"),
-            avg_ratings_count=("ratings_count", "mean"),
-            avg_reviews_count=("reviews_count", "mean"),
-            avg_pages=("pages", "mean"),
-            avg_year=("source_year", "mean")
+            avg_rating=("average_rating", "mean")
         )
         .reset_index()
     )
@@ -453,13 +484,25 @@ elif page == "Clusters & PCA":
 
     st.plotly_chart(fig2, use_container_width=True)
 
+    st.markdown("---")
+
+    st.markdown(
+        """
+       
+
+        Developed by **Bryan Calderon**  
+        For the **Ironhack Final Project**  
+        **Germany 2026**
+     """
+     )
+
 
 # --------------------------------------------------
 # Page 5: About the Model
 # --------------------------------------------------
 
 elif page == "About the Model":
-    st.title("🧠 About the Model")
+    st.title("About the Model")
 
     st.subheader("Data")
 
@@ -471,31 +514,6 @@ elif page == "About the Model":
         - **Open Library API**: historical book metadata for older books.
 
         The final dataset includes book titles, authors, ratings, descriptions, genres, years, pages, cover images, and source information.
-        """
-    )
-
-    st.subheader("Clustering")
-
-    st.markdown(
-        """
-        K-Means clustering was used to group books into broad reading profiles.
-        The model used numerical features such as rating, ratings count, reviews count, pages, source year,
-        and encoded specific genres.
-
-        Very broad genres such as **fiction** and **general** were removed from clustering features
-        because they were too common and less useful for separating book groups.
-        """
-    )
-
-    st.subheader("PCA")
-
-    st.markdown(
-        """
-        PCA reduced the clustering feature space to two dimensions.
-        This makes it possible to visualize how books are grouped.
-
-        PC1 mostly captures differences related to year, popularity, and modern engagement.
-        PC2 helps separate suspense-oriented books from children’s and fantasy books.
         """
     )
 
@@ -519,13 +537,17 @@ elif page == "About the Model":
         """
     )
 
-    st.subheader("Take-Home Message")
+    st.markdown("---")
 
     st.markdown(
         """
-        This app helps users discover books based on textual similarity, genre profile,
-        rating, popularity, and cluster membership. The model is not production-ready,
-        but it demonstrates how data collection, NLP, unsupervised learning, and web deployment
-        can be combined into a full data science product.
-        """
-    )
+        ### Project Information
+
+        Developed by **Bryan Calderon**  
+        For the **Ironhack Final Project**  
+        **Germany 2026**
+     """
+     )
+
+# run in powershéll "python -m streamlit run app.py"
+
