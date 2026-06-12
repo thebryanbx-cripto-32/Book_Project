@@ -8,14 +8,22 @@ The goal is to help users discover books similar to the ones they like. The fina
 
 ---
 
+## Presentation
+
+The final project presentation is available here:
+
+[View the Canva Presentation](https://canva.link/2mmxvy1gqg0s7h2)
+
+---
+
 ## Data Sources
 
 The final dataset combines two sources:
 
-| Source | Method | Purpose |
-|---|---|---|
-| Goodreads Popular by Year | Web scraping | Recent popular books from 1975 to 2024 |
-| Open Library | API | Historical books from 1900 to 1975 |
+| Source | Method | Purpose | Link |
+|---|---|---|---|
+| Goodreads Popular by Year | Web scraping | Top 10 Books from 1975 to 2024 | [Goodreads Popular Books by Date](https://www.goodreads.com/book/popular_by_date/2019) |
+| Open Library | API | 10 Books from 1900 to 1975 | [Open Library API](https://openlibrary.org/developers/api) |
 
 The combined dataset covers books from **1900 to 2024**.
 
@@ -103,18 +111,6 @@ These text features are cleaned and transformed using **TF-IDF**.
 
 Then, **cosine similarity** is used to compare each book with every other book.
 
-The TF-IDF matrix contains:
-
-```text
-1229 books × 5000 text features
-```
-
-The cosine similarity matrix contains:
-
-```text
-1229 books × 1229 books
-```
-
 ---
 
 ## Weighted Recommendation Score
@@ -198,7 +194,7 @@ Book_Project/
 ## How to Run the App
 
 ```bash
-python -m streamlit run results/app.py
+python -m streamlit run app.py
 ```
 
 If Streamlit is not installed:
@@ -220,8 +216,6 @@ pip install streamlit
 ---
 
 ## Future Improvements
-
-Possible improvements include:
 
 - Add user-based collaborative filtering if user rating data becomes available.
 - Add more book sources or APIs.
