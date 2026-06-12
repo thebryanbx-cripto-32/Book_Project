@@ -174,7 +174,7 @@ page = st.sidebar.radio(
         "Explore Books",
         "Recommendation System",
         "Clusters & PCA",
-        "About the Model"
+        "About"
     ]
 )
 
@@ -423,6 +423,16 @@ elif page == "Recommendation System":
                 st.divider()
 
 
+    st.markdown("---")
+
+    st.markdown(
+        """
+        Developed by **Bryan Calderon**  
+        For the **Ironhack Final Project**  
+        **Germany 2026**
+        """
+     )
+
 # --------------------------------------------------
 # Page 4: Clusters & PCA
 # --------------------------------------------------
@@ -488,12 +498,10 @@ elif page == "Clusters & PCA":
 
     st.markdown(
         """
-       
-
         Developed by **Bryan Calderon**  
         For the **Ironhack Final Project**  
         **Germany 2026**
-     """
+        """
      )
 
 
@@ -501,8 +509,8 @@ elif page == "Clusters & PCA":
 # Page 5: About the Model
 # --------------------------------------------------
 
-elif page == "About the Model":
-    st.title("About the Model")
+elif page == "About":
+    st.title("About")
 
     st.subheader("Data")
 
@@ -534,6 +542,18 @@ elif page == "About the Model":
         These text features are transformed with **TF-IDF**.
         Then, **cosine similarity** measures how similar each book is to every other book.
         The final recommendation score also includes rating, popularity, and a small same-cluster bonus.
+        """
+    )
+
+    st.markdown(
+        """
+        ### Similarity Score
+
+        Similarity Score measures how close the recommended book is to the selected book based on text features 
+        such as title, author, genres, description, and cluster.
+
+        Final Score is the ranking score. It combines 70% text similarity, 20% average rating, 
+        and 10% popularity based on ratings count.
         """
     )
 
